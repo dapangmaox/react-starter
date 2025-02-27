@@ -60,3 +60,9 @@ pnpm create vite
 2. Config tailwindcss:
 
 [Config Tailwind CSS](https://tailwindcss.com/docs/installation/using-vite)
+
+### Add shadcn/ui component
+
+```bash
+pnpm dlx shadcn@canary add table
+```
