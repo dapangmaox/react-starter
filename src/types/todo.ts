@@ -3,7 +3,7 @@ export interface Todo {
   task: string;
   description: string;
   category: string;
-  dueDate: string;
+  dueDate: Date;
   priority: string;
   completed: boolean;
   createdAt: string;

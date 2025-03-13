@@ -2,7 +2,7 @@ import './App.css';
 import { useEffect, useState } from 'react';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Button } from './components/ui/button';
+import { Button } from '@/components/ui/button';
 import {
   Table,
   TableBody,
@@ -29,19 +29,37 @@ import { useForm } from 'react-hook-form';
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from './components/ui/form';
 import { Checkbox } from './components/ui/checkbox';
+import { Textarea } from './components/ui/textarea';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from './components/ui/popover';
+import { cn } from './lib/utils';
+import { Calendar } from './components/ui/calendar';
+import { format } from 'date-fns';
+import { CalendarIcon } from 'lucide-react';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from './components/ui/select';
 
 const formSchema = z.object({
   task: z.string(),
   description: z.string(),
   category: z.string(),
-  dueDate: z.string(),
+  dueDate: z.date({
+    required_error: 'A date of birth is required.',
+  }),
   priority: z.string(),
   completed: z.boolean().default(false),
 });
@@ -57,7 +75,7 @@ function App() {
       task: '',
       description: '',
       category: '',
-      dueDate: '',
+      dueDate: new Date(),
       priority: '',
       completed: false,
     },
@@ -98,7 +116,7 @@ function App() {
           <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
             <DialogTrigger asChild>
               <Button variant="secondary" className="w-[200px]">
-                Add a new to-do
+                Add a New To-Do
               </Button>
             </DialogTrigger>
             <DialogContent>
@@ -108,7 +126,7 @@ function App() {
                   className="space-y-8"
                 >
                   <DialogHeader>
-                    <DialogTitle>Add a new to-do</DialogTitle>
+                    <DialogTitle>Add a New To-Do</DialogTitle>
                     <DialogDescription>
                       Fill in the details of the new to-do item.
                     </DialogDescription>
@@ -118,30 +136,52 @@ function App() {
                       control={form.control}
                       name="task"
                       render={({ field }) => (
-                        <FormItem className="grid-cols-1">
+                        <FormItem className="col-span-1">
                           <FormLabel>Task</FormLabel>
                           <FormControl>
-                            <Input placeholder="shadcn" {...field} />
+                            <Input placeholder="Please input..." {...field} />
                           </FormControl>
-                          <FormDescription>
-                            This is your task name.
-                          </FormDescription>
                           <FormMessage />
                         </FormItem>
                       )}
                     />
                     <FormField
                       control={form.control}
-                      name="description"
+                      name="dueDate"
                       render={({ field }) => (
-                        <FormItem className="grid-cols-1">
-                          <FormLabel>Description</FormLabel>
-                          <FormControl>
-                            <Input placeholder="shadcn" {...field} />
-                          </FormControl>
-                          <FormDescription>
-                            This is your task description.
-                          </FormDescription>
+                        <FormItem className="col-span-1 flex flex-col">
+                          <FormLabel>Due Date</FormLabel>
+                          <Popover>
+                            <PopoverTrigger asChild>
+                              <FormControl>
+                                <Button
+                                  variant={'outline'}
+                                  className={cn(
+                                    'w-full pl-3 text-left font-normal',
+                                    !field.value && 'text-muted-foreground'
+                                  )}
+                                >
+                                  {field.value ? (
+                                    format(field.value, 'PPP')
+                                  ) : (
+                                    <span>Pick a date</span>
+                                  )}
+                                  <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                                </Button>
+                              </FormControl>
+                            </PopoverTrigger>
+                            <PopoverContent
+                              className="w-auto p-0"
+                              align="start"
+                            >
+                              <Calendar
+                                mode="single"
+                                selected={field.value}
+                                onSelect={field.onChange}
+                                initialFocus
+                              />
+                            </PopoverContent>
+                          </Popover>
                           <FormMessage />
                         </FormItem>
                       )}
@@ -152,28 +192,20 @@ function App() {
                       render={({ field }) => (
                         <FormItem className="col-span-1">
                           <FormLabel>Category</FormLabel>
-                          <FormControl>
-                            <Input placeholder="Category" {...field} />
-                          </FormControl>
-                          <FormDescription>
-                            This is your task category.
-                          </FormDescription>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name="dueDate"
-                      render={({ field }) => (
-                        <FormItem className="col-span-1">
-                          <FormLabel>Due Date</FormLabel>
-                          <FormControl>
-                            <Input placeholder="Due Date" {...field} />
-                          </FormControl>
-                          <FormDescription>
-                            This is your task due date.
-                          </FormDescription>
+                          <Select
+                            onValueChange={field.onChange}
+                            defaultValue={field.value}
+                          >
+                            <FormControl className="w-full">
+                              <SelectTrigger>
+                                <SelectValue placeholder="Select a category" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              <SelectItem value="study">学习</SelectItem>
+                              <SelectItem value="work">工作</SelectItem>
+                            </SelectContent>
+                          </Select>
                           <FormMessage />
                         </FormItem>
                       )}
@@ -184,12 +216,38 @@ function App() {
                       render={({ field }) => (
                         <FormItem className="col-span-1">
                           <FormLabel>Priority</FormLabel>
+                          <Select
+                            onValueChange={field.onChange}
+                            defaultValue={field.value}
+                          >
+                            <FormControl className="w-full">
+                              <SelectTrigger>
+                                <SelectValue placeholder="Select a priority" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              <SelectItem value="high">High</SelectItem>
+                              <SelectItem value="medium">Medium</SelectItem>
+                              <SelectItem value="low">Low</SelectItem>
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="description"
+                      render={({ field }) => (
+                        <FormItem className="col-span-2">
+                          <FormLabel>Description</FormLabel>
                           <FormControl>
-                            <Input placeholder="Priority" {...field} />
+                            <Textarea
+                              placeholder="Please input..."
+                              className="resize-none h-24"
+                              {...field}
+                            />
                           </FormControl>
-                          <FormDescription>
-                            This is your task priority.
-                          </FormDescription>
                           <FormMessage />
                         </FormItem>
                       )}
@@ -198,7 +256,7 @@ function App() {
                       control={form.control}
                       name="completed"
                       render={({ field }) => (
-                        <FormItem className="col-span-1 flex flex-row items-start">
+                        <FormItem className="col-span-2 flex flex-row items-start">
                           <FormControl>
                             <Checkbox
                               checked={field.value}
@@ -214,8 +272,7 @@ function App() {
                       )}
                     />
                   </div>
-
-                  <DialogFooter className="sm:justify-start">
+                  <DialogFooter>
                     <Button type="submit">Submit</Button>
                     <DialogClose asChild>
                       <Button type="button" variant="secondary">
@@ -232,7 +289,7 @@ function App() {
               All
             </Button>
             <Button variant="secondary" className="w-[100px]">
-              To-do
+              To-Do
             </Button>
             <Button variant="secondary" className="w-[100px]">
               Completed
@@ -260,7 +317,7 @@ function App() {
                     <TableCell>{todo.task}</TableCell>
                     <TableCell>{todo.description}</TableCell>
                     <TableCell>{todo.category}</TableCell>
-                    <TableCell>{todo.dueDate}</TableCell>
+                    <TableCell>{format(todo.dueDate, 'PPP')}</TableCell>
                     <TableCell>{todo.priority}</TableCell>
                     <TableCell>
                       {todo.completed ? 'Completed' : 'To-do'}
