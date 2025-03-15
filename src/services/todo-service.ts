@@ -9,7 +9,7 @@ let todos: Todo[] = [
     category: '工作',
     dueDate: '2025-03-01',
     priority: '高',
-    completed: false,
+    status: 'todo',
     createdAt: '2025-02-27T09:00:00',
     updatedAt: '2025-02-27T09:00:00',
   },

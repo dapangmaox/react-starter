@@ -3,9 +3,16 @@ export interface Todo {
   task: string;
   description: string;
   category: string;
-  dueDate: Date;
+  dueDate: string;
   priority: string;
-  completed: boolean;
+  status: TodoStatus;
   createdAt: string;
   updatedAt: string;
 }
+
+export type TodoStatus =
+  | 'todo'
+  | 'in-progress'
+  | 'done'
+  | 'canceled'
+  | 'backlog';
