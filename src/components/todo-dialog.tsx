@@ -12,7 +12,6 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import {
@@ -90,11 +89,6 @@ export function TodoDialog({ onTodoAdded }: TodoDialogProps) {
 
   return (
     <Dialog open={dialogOpen === 'add'} onOpenChange={setDialogOpen}>
-      <DialogTrigger asChild>
-        <Button variant="secondary" className="w-[200px]">
-          Add a New To-Do
-        </Button>
-      </DialogTrigger>
       <DialogContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
