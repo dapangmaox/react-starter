@@ -1,4 +1,7 @@
 import {
+  ArrowDownIcon,
+  ArrowRightIcon,
+  ArrowUpIcon,
   CheckIcon,
   CircleXIcon,
   ClockIcon,
@@ -6,7 +9,17 @@ import {
   TimerOffIcon,
 } from 'lucide-react';
 
-import { TodoStatus } from '@/types/todo';
+import { TodoPriority, TodoStatus } from '@/types/todo';
+
+export const priorityList: {
+  value: TodoPriority;
+  label: string;
+  icon: React.ElementType;
+}[] = [
+  { value: 'high', label: 'High', icon: ArrowUpIcon },
+  { value: 'medium', label: 'Medium', icon: ArrowRightIcon },
+  { value: 'low', label: 'Low', icon: ArrowDownIcon },
+];
 
 export const statusList: {
   value: TodoStatus;

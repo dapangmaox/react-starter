@@ -41,15 +41,14 @@ import { cn } from '@/lib/utils';
 
 import { useTodoList } from '@/context/todo-list-context';
 import { todoService } from '@/services/todo-service';
+import { priorityList, statusList } from '@/constants';
 
 const formSchema = z.object({
   task: z.string(),
   description: z.string(),
   dueDate: z.date(),
-  priority: z.enum(['High', 'Medium', 'Low']).default('Medium'),
-  status: z
-    .enum(['todo', 'in-progress', 'done', 'canceled', 'expired'])
-    .default('todo'),
+  priority: z.enum(['high', 'medium', 'low']),
+  status: z.enum(['todo', 'in-progress', 'done', 'canceled', 'expired']),
 });
 
 interface TodoDialogProps {
@@ -65,7 +64,7 @@ function TodoDialog({ onTodoAdded }: TodoDialogProps) {
       task: '',
       description: '',
       dueDate: new Date(),
-      priority: 'Medium',
+      priority: 'medium',
       status: 'todo',
     },
   });
@@ -164,9 +163,14 @@ function TodoDialog({ onTodoAdded }: TodoDialogProps) {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="high">High</SelectItem>
-                        <SelectItem value="medium">Medium</SelectItem>
-                        <SelectItem value="low">Low</SelectItem>
+                        {priorityList.map((priority) => (
+                          <SelectItem
+                            key={priority.value}
+                            value={priority.value}
+                          >
+                            {priority.label}
+                          </SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -189,11 +193,11 @@ function TodoDialog({ onTodoAdded }: TodoDialogProps) {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="todo">To-do</SelectItem>
-                        <SelectItem value="in-progress">In Progress</SelectItem>
-                        <SelectItem value="done">Done</SelectItem>
-                        <SelectItem value="canceled">Canceled</SelectItem>
-                        <SelectItem value="backlog">Backlog</SelectItem>
+                        {statusList.map((status) => (
+                          <SelectItem key={status.value} value={status.value}>
+                            {status.label}
+                          </SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                     <FormMessage />

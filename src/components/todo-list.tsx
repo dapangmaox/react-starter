@@ -1,5 +1,4 @@
 import { format } from 'date-fns';
-import { ArrowUpIcon, ArrowRightIcon, ArrowDownIcon } from 'lucide-react';
 
 import {
   Table,
@@ -11,7 +10,7 @@ import {
 } from '@/components/ui/table';
 import { Todo, TodoPriority, TodoStatus } from '@/types/todo';
 import TodoRowActions from './todo-row-actions';
-import { statusList } from '@/constants';
+import { priorityList, statusList } from '@/constants';
 
 interface TodoListProps {
   todos: Todo[];
@@ -37,7 +36,7 @@ export function TodoList({ todos }: TodoListProps) {
             <TableCell>{format(todo.dueDate, 'PPP')}</TableCell>
             <TableCell>
               <div className="flex items-center space-x-1">
-                <PriorityIcon priority={todo.priority} />
+                <PriorityCell priority={todo.priority} />
                 <span>{todo.priority}</span>
               </div>
             </TableCell>
@@ -55,17 +54,21 @@ export function TodoList({ todos }: TodoListProps) {
   );
 }
 
-function PriorityIcon({ priority }: { priority: TodoPriority }) {
-  switch (priority) {
-    case 'High':
-      return <ArrowUpIcon className="w-4 h-4" />;
-    case 'Medium':
-      return <ArrowRightIcon className="w-4 h-4" />;
-    case 'Low':
-      return <ArrowDownIcon className="w-4 h-4" />;
-    default:
-      return null;
+function PriorityCell({ priority }: { priority: TodoPriority }) {
+  const priorityItem = priorityList.find((item) => item.value === priority);
+
+  if (!priorityItem) {
+    return null;
   }
+
+  return (
+    <div className="flex items-center space-x-1">
+      {priorityItem.icon && (
+        <priorityItem.icon className="w-4 h-4 text-muted-foreground" />
+      )}
+      <span>{priorityItem.label}</span>
+    </div>
+  );
 }
 
 function StatusCell({ statusValue }: { statusValue: TodoStatus }) {

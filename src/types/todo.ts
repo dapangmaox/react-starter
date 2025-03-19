@@ -16,4 +16,4 @@ export type TodoStatus =
   | 'canceled'
   | 'expired';
 
-export type TodoPriority = 'High' | 'Medium' | 'Low';
+export type TodoPriority = 'high' | 'medium' | 'low';
