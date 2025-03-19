@@ -47,7 +47,7 @@ function App() {
           </div>
         </div>
       </div>
-      <TodoDialog onTodoAdded={loadTodos} />
+      <TodoDialog onTodoChanged={loadTodos} />
     </TodoListProvider>
   );
 }

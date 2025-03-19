@@ -17,15 +17,15 @@ interface TodoRowActionsProps {
 
 function TodoRowActions({ todo }: TodoRowActionsProps) {
   const { setOpen, setCurrentRow } = useTodoList();
+
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger>
+      <DropdownMenuTrigger asChild>
         <Button
           variant="ghost"
           className="flex h-8 w-8 p-0 data-[state=open]:bg-muted"
         >
           <Ellipsis />
-          <span className="sr-only">Open menu</span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
@@ -41,7 +41,7 @@ function TodoRowActions({ todo }: TodoRowActionsProps) {
         <DropdownMenuItem
           onClick={() => {
             setCurrentRow(todo);
-            setOpen('edit');
+            setOpen('delete');
           }}
         >
           Delete

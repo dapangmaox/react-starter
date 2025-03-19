@@ -37,7 +37,6 @@ export function TodoList({ todos }: TodoListProps) {
             <TableCell>
               <div className="flex items-center space-x-1">
                 <PriorityCell priority={todo.priority} />
-                <span>{todo.priority}</span>
               </div>
             </TableCell>
             <TableCell>
