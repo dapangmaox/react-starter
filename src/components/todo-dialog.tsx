@@ -45,11 +45,10 @@ import { todoService } from '@/services/todo-service';
 const formSchema = z.object({
   task: z.string(),
   description: z.string(),
-  category: z.string(),
   dueDate: z.date(),
-  priority: z.string(),
+  priority: z.enum(['High', 'Medium', 'Low']).default('Medium'),
   status: z
-    .enum(['todo', 'in-progress', 'done', 'canceled', 'backlog'])
+    .enum(['todo', 'in-progress', 'done', 'canceled', 'expired'])
     .default('todo'),
 });
 
@@ -57,7 +56,7 @@ interface TodoDialogProps {
   onTodoAdded: () => void;
 }
 
-export function TodoDialog({ onTodoAdded }: TodoDialogProps) {
+function TodoDialog({ onTodoAdded }: TodoDialogProps) {
   const { open: dialogOpen, setOpen } = useTodoList();
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -65,9 +64,8 @@ export function TodoDialog({ onTodoAdded }: TodoDialogProps) {
     defaultValues: {
       task: '',
       description: '',
-      category: '',
       dueDate: new Date(),
-      priority: '',
+      priority: 'Medium',
       status: 'todo',
     },
   });
@@ -152,30 +150,6 @@ export function TodoDialog({ onTodoAdded }: TodoDialogProps) {
               />
               <FormField
                 control={form.control}
-                name="category"
-                render={({ field }) => (
-                  <FormItem className="col-span-1">
-                    <FormLabel>Category</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
-                      <FormControl className="w-full">
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select a category" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="study">学习</SelectItem>
-                        <SelectItem value="work">工作</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
                 name="priority"
                 render={({ field }) => (
                   <FormItem className="col-span-1">
@@ -195,23 +169,6 @@ export function TodoDialog({ onTodoAdded }: TodoDialogProps) {
                         <SelectItem value="low">Low</SelectItem>
                       </SelectContent>
                     </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="description"
-                render={({ field }) => (
-                  <FormItem className="col-span-2">
-                    <FormLabel>Description</FormLabel>
-                    <FormControl>
-                      <Textarea
-                        placeholder="Please input..."
-                        className="resize-none h-24"
-                        {...field}
-                      />
-                    </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -243,6 +200,23 @@ export function TodoDialog({ onTodoAdded }: TodoDialogProps) {
                   </FormItem>
                 )}
               />
+              <FormField
+                control={form.control}
+                name="description"
+                render={({ field }) => (
+                  <FormItem className="col-span-2">
+                    <FormLabel>Description</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        placeholder="Please input..."
+                        className="resize-none h-24"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </div>
             <DialogFooter>
               <Button type="submit">Submit</Button>
@@ -258,3 +232,5 @@ export function TodoDialog({ onTodoAdded }: TodoDialogProps) {
     </Dialog>
   );
 }
+
+export default TodoDialog;

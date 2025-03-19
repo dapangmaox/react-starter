@@ -1,3 +1,4 @@
+import { Todo } from '@/types/todo';
 import React, { useState } from 'react';
 
 type TodoListDialogType = 'add' | 'edit' | 'delete';
@@ -5,6 +6,8 @@ type TodoListDialogType = 'add' | 'edit' | 'delete';
 interface TodoListContextType {
   open: TodoListDialogType | null;
   setOpen: (type: TodoListDialogType | null) => void;
+  currentRow: Todo | null;
+  setCurrentRow: (row: Todo | null) => void;
 }
 
 const TodoListContext = React.createContext<TodoListContextType | null>(null);
@@ -15,9 +18,12 @@ interface Props {
 
 export default function TodoListProvider({ children }: Props) {
   const [open, setOpen] = useState<TodoListDialogType | null>(null);
+  const [currentRow, setCurrentRow] = useState<Todo | null>(null);
 
   return (
-    <TodoListContext.Provider value={{ open, setOpen }}>
+    <TodoListContext.Provider
+      value={{ open, setOpen, currentRow, setCurrentRow }}
+    >
       {children}
     </TodoListContext.Provider>
   );

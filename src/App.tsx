@@ -2,11 +2,12 @@ import { useEffect, useState } from 'react';
 import './App.css';
 
 import TodoList from '@/components/todo-list';
-import { TodoDialog } from '@/components/todo-dialog';
+import TodoDialog from '@/components/todo-dialog';
 import { todoService } from './services/todo-service';
 import TodoListProvider from './context/todo-list-context';
 import { Todo } from './types/todo';
 import Header from '@/components/header';
+import Loading from '@/components/loading';
 
 function App() {
   const [todos, setTodos] = useState<Todo[]>([]);
@@ -42,7 +43,7 @@ function App() {
           </div>
           <Header />
           <div className="mt-6">
-            {loading ? <div>Loading...</div> : <TodoList todos={todos} />}
+            {loading ? <Loading /> : <TodoList todos={todos} />}
           </div>
         </div>
       </div>
