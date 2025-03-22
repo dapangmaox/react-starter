@@ -39,7 +39,6 @@ import { Calendar } from '@/components/ui/calendar';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
-import { useTodoList } from '@/context/todo-list-context';
 import { todoService } from '@/services/todo-service';
 import { priorityList, statusList } from '@/constants';
 import { Todo } from '@/types/todo';
@@ -59,8 +58,6 @@ interface TodoMutateProps {
 }
 
 function TodoMutate({ open, todo, onTodoChanged }: TodoMutateProps) {
-  const { setOpen } = useTodoList();
-
   const isUpdate = !!todo;
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -96,12 +93,11 @@ function TodoMutate({ open, todo, onTodoChanged }: TodoMutateProps) {
     }
 
     form.reset();
-    setOpen(null);
     onTodoChanged();
   }
 
   return (
-    <Dialog open={open} onOpenChange={() => setOpen(null)}>
+    <Dialog open={open} onOpenChange={onTodoChanged}>
       <DialogContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">

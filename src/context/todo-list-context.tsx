@@ -1,3 +1,4 @@
+import useDialogState from '@/hooks/use-dialog-state';
 import { Todo } from '@/types/todo';
 import React, { useState } from 'react';
 
@@ -17,7 +18,7 @@ interface Props {
 }
 
 export default function TodoListProvider({ children }: Props) {
-  const [open, setOpen] = useState<TodoListDialogType | null>(null);
+  const [open, setOpen] = useDialogState<TodoListDialogType>(null);
   const [currentRow, setCurrentRow] = useState<Todo | null>(null);
 
   return (

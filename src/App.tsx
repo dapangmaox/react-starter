@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import './App.css';
 
 import TodoList from '@/components/todo-list';
-import TodoDialog from '@/components/todo-dialog';
+import TodoDialogs from '@/components/todo-dialogs';
 import { todoService } from './services/todo-service';
 import TodoListProvider from './context/todo-list-context';
 import { Todo } from './types/todo';
@@ -47,7 +47,7 @@ function App() {
           </div>
         </div>
       </div>
-      <TodoDialog onTodoChanged={loadTodos} />
+      <TodoDialogs onTodoChanged={loadTodos} />
     </TodoListProvider>
   );
 }
