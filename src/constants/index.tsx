@@ -32,7 +32,7 @@ export const statusList: {
     icon: LoaderCircleIcon,
   },
   {
-    value: 'in-progress',
+    value: 'in_progress',
     label: 'In Progress',
     icon: ClockIcon,
   },

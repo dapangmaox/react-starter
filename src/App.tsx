@@ -15,22 +15,16 @@ function App() {
 
   const loadTodos = async () => {
     setLoading(true);
-    const data = await todoService.getAll();
-    setTodos(data);
+    const response = await todoService.getAll();
+    if (response.code !== 200) {
+      setLoading(false);
+      return;
+    }
+    setTodos(response.data);
     setLoading(false);
   };
 
   useEffect(() => {
-    loadTodos();
-  }, []);
-
-  useEffect(() => {
-    const loadTodos = async () => {
-      setLoading(true);
-      const data = await todoService.getAll();
-      setTodos(data);
-      setLoading(false);
-    };
     loadTodos();
   }, []);
 

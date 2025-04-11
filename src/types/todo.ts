@@ -2,16 +2,16 @@ export interface Todo {
   id: number;
   task: string;
   description: string;
-  dueDate: string;
+  dueDate: Date;
   priority: TodoPriority;
   status: TodoStatus;
-  createdAt: string;
-  updatedAt: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export type TodoStatus =
   | 'todo'
-  | 'in-progress'
+  | 'in_progress'
   | 'done'
   | 'canceled'
   | 'expired';

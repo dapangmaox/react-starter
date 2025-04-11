@@ -48,7 +48,7 @@ const formSchema = z.object({
   description: z.string(),
   dueDate: z.date(),
   priority: z.enum(['high', 'medium', 'low']),
-  status: z.enum(['todo', 'in-progress', 'done', 'canceled', 'expired']),
+  status: z.enum(['todo', 'in_progress', 'done', 'canceled', 'expired']),
 });
 
 interface TodoMutateProps {
@@ -58,17 +58,13 @@ interface TodoMutateProps {
 }
 
 function TodoMutate({ open, todo, onTodoChanged }: TodoMutateProps) {
-  const isUpdate = !!todo;
-
+  const isUpdate = !!todo?.id;
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: todo
       ? {
-          task: todo.task,
-          description: todo.description,
+          ...todo,
           dueDate: new Date(todo.dueDate),
-          priority: todo.priority,
-          status: todo.status,
         }
       : {
           task: '',
@@ -80,17 +76,10 @@ function TodoMutate({ open, todo, onTodoChanged }: TodoMutateProps) {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    if (isUpdate) {
-      await todoService.update(todo!.id, {
-        ...values,
-        dueDate: values.dueDate.toISOString(),
-      });
-    } else {
-      await todoService.create({
-        ...values,
-        dueDate: values.dueDate.toISOString(),
-      });
-    }
+    await todoService.addUpdate({
+      ...todo,
+      ...values,
+    });
 
     form.reset();
     onTodoChanged();
@@ -102,7 +91,9 @@ function TodoMutate({ open, todo, onTodoChanged }: TodoMutateProps) {
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <DialogHeader>
-              <DialogTitle>Add a New To-Do</DialogTitle>
+              <DialogTitle>
+                {isUpdate ? 'Update To-Do' : 'Add a new To-Do'}
+              </DialogTitle>
               <DialogDescription>
                 Fill in the details of the new to-do item.
               </DialogDescription>
