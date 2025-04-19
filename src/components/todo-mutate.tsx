@@ -42,14 +42,7 @@ import { cn } from '@/lib/utils';
 import { todoService } from '@/services/todo-service';
 import { priorityList, statusList } from '@/constants';
 import { Todo } from '@/types/todo';
-
-const formSchema = z.object({
-  task: z.string(),
-  description: z.string(),
-  dueDate: z.date(),
-  priority: z.enum(['high', 'medium', 'low']),
-  status: z.enum(['todo', 'in_progress', 'done', 'canceled', 'expired']),
-});
+import { todoSchema } from '@/schema';
 
 interface TodoMutateProps {
   open: boolean;
@@ -59,8 +52,8 @@ interface TodoMutateProps {
 
 function TodoMutate({ open, todo, onTodoChanged }: TodoMutateProps) {
   const isUpdate = !!todo?.id;
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof todoSchema>>({
+    resolver: zodResolver(todoSchema),
     defaultValues: todo
       ? {
           ...todo,
@@ -75,7 +68,7 @@ function TodoMutate({ open, todo, onTodoChanged }: TodoMutateProps) {
         },
   });
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof todoSchema>) {
     await todoService.addUpdate({
       ...todo,
       ...values,

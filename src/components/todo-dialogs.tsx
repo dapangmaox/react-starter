@@ -18,24 +18,20 @@ function TodoDialogs({ onTodoChanged }: TodoDialogProps) {
         onTodoChanged={() => {
           setOpen('add');
           onTodoChanged();
-          setTimeout(() => {
-            setCurrentRow(null);
-          }, 500);
+          setCurrentRow(null);
         }}
       />
       ;
       {currentRow && (
         <>
           <TodoMutate
-            key="todo-edit"
-            open={open === 'edit'}
+            key="todo-update"
+            open={open === 'update'}
             todo={currentRow}
             onTodoChanged={() => {
-              setOpen('edit');
+              setOpen('update');
               onTodoChanged();
-              setTimeout(() => {
-                setCurrentRow(null);
-              }, 500);
+              setCurrentRow(null);
             }}
           />
 
@@ -45,13 +41,11 @@ function TodoDialogs({ onTodoChanged }: TodoDialogProps) {
             open={open === 'delete'}
             onOpenChange={() => {
               setOpen('delete');
-              setTimeout(() => {
-                setCurrentRow(null);
-              }, 500);
+              setCurrentRow(null);
             }}
             handleConfirm={async () => {
               setOpen(null);
-              await todoService.delete(currentRow.id);
+              await todoService.delete(currentRow.id!);
               setTimeout(() => {
                 setCurrentRow(null);
               }, 500);

@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react';
 import './App.css';
 
-import TodoList from '@/components/todo-list';
-import TodoDialogs from '@/components/todo-dialogs';
-import { todoService } from './services/todo-service';
-import TodoListProvider from './context/todo-list-context';
-import { Todo } from './types/todo';
 import Header from '@/components/header';
 import Loading from '@/components/loading';
+import TodoDialogs from '@/components/todo-dialogs';
+import { columns } from './components/columns';
+import { DataTable } from './components/data-table';
+import TodoListProvider from './context/todo-list-context';
+import { todoService } from './services/todo-service';
+import { Todo } from './types/todo';
 
 function App() {
   const [todos, setTodos] = useState<Todo[]>([]);
@@ -37,7 +38,11 @@ function App() {
           </div>
           <Header />
           <div className="mt-6">
-            {loading ? <Loading /> : <TodoList todos={todos} />}
+            {loading ? (
+              <Loading />
+            ) : (
+              <DataTable data={todos} columns={columns} />
+            )}
           </div>
         </div>
       </div>

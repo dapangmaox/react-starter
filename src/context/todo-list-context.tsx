@@ -2,13 +2,13 @@ import useDialogState from '@/hooks/use-dialog-state';
 import { Todo } from '@/types/todo';
 import React, { useState } from 'react';
 
-type TodoListDialogType = 'add' | 'edit' | 'delete';
+type TodoListDialogType = 'add' | 'update' | 'delete';
 
 interface TodoListContextType {
   open: TodoListDialogType | null;
   setOpen: (type: TodoListDialogType | null) => void;
   currentRow: Todo | null;
-  setCurrentRow: (row: Todo | null) => void;
+  setCurrentRow: React.Dispatch<React.SetStateAction<Todo | null>>;
 }
 
 const TodoListContext = React.createContext<TodoListContextType | null>(null);

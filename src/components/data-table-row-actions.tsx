@@ -8,27 +8,34 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { useTodoList } from '@/context/todo-list-context';
-import { Todo } from '@/types/todo';
-import { Ellipsis, Trash2Icon } from 'lucide-react';
+import { todoSchema } from '@/schema';
+import { DotsHorizontalIcon } from '@radix-ui/react-icons';
+import { Row } from '@tanstack/react-table';
+import { Trash2Icon } from 'lucide-react';
 
-interface TodoRowActionsProps {
-  todo: Todo;
+interface DataTableRowActionsProps<TData> {
+  row: Row<TData>;
 }
 
-function TodoRowActions({ todo }: TodoRowActionsProps) {
+export function DataTableRowActions<TData>({
+  row,
+}: DataTableRowActionsProps<TData>) {
+  const todo = todoSchema.parse(row.original);
+
   const { setOpen, setCurrentRow } = useTodoList();
 
   return (
-    <DropdownMenu>
+    <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild>
         <Button
           variant="ghost"
           className="flex h-8 w-8 p-0 data-[state=open]:bg-muted"
         >
-          <Ellipsis />
+          <DotsHorizontalIcon className="h-4 w-4" />
+          <span className="sr-only">Open menu</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent>
+      <DropdownMenuContent align="end" className="w-[160px]">
         <DropdownMenuItem
           onClick={() => {
             setCurrentRow(todo);
@@ -46,12 +53,10 @@ function TodoRowActions({ todo }: TodoRowActionsProps) {
         >
           Delete
           <DropdownMenuShortcut>
-            <Trash2Icon />
+            <Trash2Icon size={16} />
           </DropdownMenuShortcut>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );
 }
-
-export default TodoRowActions;
