@@ -12,9 +12,9 @@ import {
 import { TodoPriority, TodoStatus } from '@/types/todo';
 
 export const priorityList: {
-  value: TodoPriority;
   label: string;
-  icon: React.ElementType;
+  value: TodoPriority;
+  icon?: React.ComponentType<{ className?: string }>;
 }[] = [
   { value: 'high', label: 'High', icon: ArrowUpIcon },
   { value: 'medium', label: 'Medium', icon: ArrowRightIcon },
@@ -22,9 +22,9 @@ export const priorityList: {
 ];
 
 export const statusList: {
-  value: TodoStatus;
   label: string;
-  icon: React.ElementType;
+  value: TodoStatus;
+  icon?: React.ComponentType<{ className?: string }>;
 }[] = [
   {
     value: 'todo',

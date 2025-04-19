@@ -28,6 +28,10 @@ export const columns: ColumnDef<Todo>[] = [
     ),
     cell: ({ row }) => {
       const dueDate = row.getValue<Date>('dueDate');
+      if (!dueDate) {
+        return null;
+      }
+
       return (
         <div className="flex space-x-2">
           <span className="max-w-32 truncate sm:max-w-72 md:max-w-[32rem]">

@@ -8,8 +8,6 @@ function transformTodoDates(todo: Todo): Todo {
   return {
     ...todo,
     dueDate: new Date(todo.dueDate),
-    createdAt: new Date(todo.createdAt),
-    updatedAt: new Date(todo.updatedAt),
   };
 }
 

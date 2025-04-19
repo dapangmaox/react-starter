@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import './App.css';
 
-import Header from '@/components/header';
 import Loading from '@/components/loading';
 import TodoDialogs from '@/components/todo-dialogs';
 import { columns } from './components/columns';
@@ -31,13 +30,10 @@ function App() {
 
   return (
     <TodoListProvider>
-      <div className="bg-background text-foreground m-6">
-        <div className="flex flex-col mx-auto">
-          <div className="font-bold text-3xl text-center my-6">
-            React To-Do List
-          </div>
-          <Header />
-          <div className="mt-6">
+      <div className='bg-background text-foreground m-6'>
+        <div className='flex flex-col mx-auto'>
+          <div className='font-bold text-3xl text-center'>React To-Do List</div>
+          <div className='mt-6'>
             {loading ? (
               <Loading />
             ) : (
